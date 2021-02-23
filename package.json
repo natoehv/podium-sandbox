@@ -1,0 +1,9 @@
+{
+  "name": "podium-sandbox",
+  "version": "1.0.0",
+  "description": "webcomponent used to manage customized podium events",
+  "main": "index.js",
+  "repository": "https://github.com/natoehv/podium-sandbox",
+  "author": "nato.ehv@gmail.com",
+  "license": "MIT"
+}
