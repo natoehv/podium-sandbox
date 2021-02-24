@@ -18,6 +18,7 @@
     "./src/element.ts",
     "./src/index.ts",
   ],
+  "declaration": true,
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

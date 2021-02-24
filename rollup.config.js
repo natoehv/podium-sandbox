@@ -5,13 +5,17 @@ import resolve from 'rollup-plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
+import multiEntry from "@rollup/plugin-multi-entry";
 import { terser } from 'rollup-plugin-terser';
 
 const cwd = path.resolve(__dirname);
 const { PRODUCTION: production } = process.env;
 
 const pkg = require(`${cwd}/package.json`);
-const input = 'src/index.ts';
+const input = {
+  include: 'src/**/*.ts',
+  entryFileName: 'index.js',
+};
 
 
 export default [
@@ -19,7 +23,7 @@ export default [
     // ES
     input,
     output: {
-      file: 'dist/es/index.js',
+      dir: './dist/es',
       format: 'es',
     },
     external: [
@@ -27,8 +31,14 @@ export default [
       ...Object.keys(pkg.peerDependencies || {})
     ],
     plugins: [
+      multiEntry({ relative: 'src/'}),
       resolve({ mainFields: ['module'] }),
-      typescript(),
+      typescript({
+        declaration: true,
+        declarationDir: './dist/es',
+        outDir: './dist/es',
+        rootDir: './src/',
+      }),
       cleanup(),
       !production && serve('.'),
       !production && livereload('.'),
@@ -38,14 +48,20 @@ export default [
   {
     input,
     output: {
-      file: 'dist/iife/index.js',
+      dir: './dist/iife',
       format: 'iife',
       name: 'podiumSandbox',
       sourcemap: true
     },
     plugins: [
+      multiEntry(),
       resolve({ mainFields: ['main'] }),
-      typescript(),
+      typescript({
+        declaration: true,
+        declarationDir: './dist/iife',
+        outDir: './dist/iife',
+        rootDir: './src/',
+      }),
       terser({ safari10: true }),
     ],
   },
@@ -53,16 +69,18 @@ export default [
   {
     input,
     output: {
-      file: 'dist/lib/index.js',
+      dir: './dist/lib',
       format: 'cjs',
       sourcemap: false
     },
     plugins: [
+      multiEntry({ relative: 'src/' }),
       resolve({ mainFields: ['main'] }),
       typescript({
         declaration: true,
-        declarationDir: 'types/',
-        rootDir: 'src/'
+        declarationDir: './dist/lib',
+        outDir: './dist/lib',
+        rootDir: './src/',
       }),
       terser({ safari10: true }),
       cleanup(),
