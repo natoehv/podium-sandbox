@@ -1,0 +1,28 @@
+.podium-sandbox {
+  background: rgba(74, 74, 74, 0.8);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+
+  &__form {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__input {
+    width: 46%;
+    height: 25px;
+    line-height: 25px;
+    margin: 5px;
+  }
+  &__area-text {
+    width: 100%;
+    margin: 5px;
+  }
+  &__form-send {
+    height: 42px;
+    margin: 5px;
+  }
+  &__form-send {
+    width: 100%;
+  }
+}

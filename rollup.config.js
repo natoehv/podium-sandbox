@@ -2,7 +2,9 @@
 import path from 'path';
 import cleanup from 'rollup-plugin-cleanup';
 import resolve from 'rollup-plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
+import postcss from 'rollup-plugin-postcss';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
 import multiEntry from "@rollup/plugin-multi-entry";
@@ -39,9 +41,14 @@ export default [
         outDir: './dist/es',
         rootDir: './src/',
       }),
+      commonjs(),
+      postcss({
+        inject: false,
+        minimize: true
+      }),
       cleanup(),
-      !production && serve('.'),
-      !production && livereload('.'),
+      !production && serve(),
+      !production && livereload(),
     ]
   },
   // IIFE
@@ -62,6 +69,11 @@ export default [
         outDir: './dist/iife',
         rootDir: './src/',
       }),
+      commonjs(),
+      postcss({
+        inject: false,
+        minimize: true
+      }),
       terser({ safari10: true }),
     ],
   },
@@ -81,6 +93,11 @@ export default [
         declarationDir: './dist/lib',
         outDir: './dist/lib',
         rootDir: './src/',
+      }),
+      commonjs(),
+      postcss({
+        inject: false,
+        minimize: true
       }),
       terser({ safari10: true }),
       cleanup(),

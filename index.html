@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+  <head>
+    <script type="module">
+      import './dist/lib/index.js';
+
+      const setLogs = () => {
+        const logs = document.querySelector('#logs');
+        let html = '';
+        window['@podium'].sink.map.forEach(a => html = html + (a.toArray().map((a) => `
+          <div>${a.channel} - ${a.topic} - ${JSON.stringify(a.payload)}</div>
+        `).join('')))
+        logs.innerHTML = html;
+      }
+      setTimeout(setLogs, 0)
+
+      const sandbox = document.querySelector('podium-sandbox');
+      sandbox.addEventListener('send-event', () => {
+        setTimeout(setLogs, 0)
+      })
+    </script>
+  </head>
+  <body>
+    <p>Events from @podium/browser: </p>
+    <div id="logs"></div>
+    <podium-sandbox events='[{ "channel": "channel1", "topic": "topic1", "payload": { "test": "object-test1"}},{ "channel": "channel2", "topic": "topic2", "payload": { "test": "object-test2"}}]'></podium-sandbox>
+  </body>
+</html>
